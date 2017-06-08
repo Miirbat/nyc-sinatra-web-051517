@@ -7,7 +7,9 @@ class FiguresController < ApplicationController
 
   get '/figures/new' do
     @landmarks = Landmark.all
-    erb :'landmarks/new'
+    @titles = Title.all
+    #binding.pry
+    erb :'figures/new'
   end
 
   post '/figures' do
@@ -22,12 +24,20 @@ class FiguresController < ApplicationController
 
   get '/figures/:id' do
     @figure = Figure.find(params[:id])
-    @figure.update(params["figure"])
-    if !params["landmark"]["name"].empty?
-      @landmark = Landmark.create(name: params["landmark"]["name"])
-      @figure.landmarks << @landmark
-    end
-    erb :show
+    @landmarks = @figure.landmarks
+    erb :'figures/show'
+  end
+
+  get 'figures/:id/edit' do
+    erb :edit
+  end
+
+  patch 'figures/:id' do
+    # @figure.update(params["figure"])
+    # if !params["landmark"]["name"].empty?
+    #   @landmark = Landmark.create(name: params["landmark"]["name"])
+    #   @figure.landmarks << @landmark
+    # end
   end
 
 end
